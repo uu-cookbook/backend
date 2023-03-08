@@ -31,6 +31,11 @@ app.get("/ab*cd", function (req, res) {
     res.send("Page Pattern Match");
 });
 
+app.get("/heloo", function (req, res) {
+    console.log("Got a GET request for /ab*cd");
+    res.send("heloo");
+});
+
 var server = app.listen(8020, "0.0.0.0", function () {
     var host = server.address().address;
     var port = server.address().port;
