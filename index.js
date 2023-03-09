@@ -3,6 +3,10 @@ var app = express();
 
 const db = require("./db");
 
+// Express setings
+const hostname = "0.0.0.0";
+const port = process.env.NODE_PORT || 8020;
+
 // Connection URL
 const uri = "mongodb://136.244.82.171:27017/";
 
@@ -23,7 +27,7 @@ app.post("/login", function (req, res) {
     res.send({ status: "ok" });
 });
 
-var server = app.listen(8020, "0.0.0.0", function () {
+var server = app.listen(port, hostname, function () {
     var host = server.address().address;
     var port = server.address().port;
 
