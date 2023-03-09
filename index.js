@@ -11,18 +11,18 @@ const port = process.env.NODE_PORT || 8020;
 const uri = "mongodb://136.244.82.171:27017/";
 
 // This responds with "Hello World" on the homepage
-app.get("/", function (req, res) {
+app.get("/v3", function (req, res) {
     console.log("Got a GET request for the homepage");
     res.send("Hello GET");
 });
 
-app.get("/users", function (req, res) {
+app.get("/v3/users", function (req, res) {
     db.getUsers().then((value) => {
         res.send(value);
     });
 });
 
-app.post("/login", function (req, res) {
+app.post("/v3/login", function (req, res) {
     console.log("req.body", req.body);
     res.send({ status: "ok" });
 });
