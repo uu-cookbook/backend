@@ -4,7 +4,6 @@ Documentation=https://cookbook.uu.vojtechpetrasek.com/docs
 After=network.target
 
 [Service]
-Environment=NODE_PORT=8020
 Type=simple
 User=root
 ExecStart=/usr/bin/node /root/uuCookBook/backend/index.js

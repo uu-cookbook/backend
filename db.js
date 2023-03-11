@@ -1,9 +1,6 @@
 const { MongoClient } = require("mongodb");
 
-const uri =
-    "mongodb://vpetras:fM3dgeN4MjHIf7qThF9m3kEg@0.0.0.0:27017/?authMechanism=DEFAULT";
-
-async function getUsers() {
+async function getUsers(uri) {
     const client = new MongoClient(uri);
     const database = client.db("CookBook");
     const collection = database.collection("Users");
@@ -13,7 +10,19 @@ async function getUsers() {
     return users;
 }
 
-module.exports = { getUsers };
+async function getUser(uri, email) {
+    const client = new MongoClient(uri);
+    const database = client.db("CookBook");
+    const collection = database.collection("Users");
+    console.log("email",email,typeof email)
+    const query = {email: email};
+    console.log("querry",query)
+    var user = await collection.find(query).toArray();
+    client.close();
+    return user;
+}
+
+module.exports = { getUsers, getUser };
 
 //getUsers().then((value) => {
 //    console.log(value);
