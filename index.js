@@ -1,9 +1,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+var cors = require('cors')
 
 var app = express();
 app.use(express.json());
+app.use(cors())
 
 
 dotenv.config();
@@ -30,18 +33,69 @@ app.get("/v3/users", (req, res) => {
 });
 
 app.post("/v3/login", (req, res) => {
-    console.log("login post")
+    console.log("login")
     console.log("req.body", req.body);
-    if (req.body.email) {
-        console.log(req.body.email)
-        db.getUser(mongo_uri,req.body.email).then((value) => {
-            res.send({status:"ok",user:value})
+    if (req.body.email && req.body.password) {
+        db.getUser(mongo_uri,req.body.email).then((user) => {
+            if (user.length > 0) {
+                bcrypt.compare(req.body.password, user[0].password, (err,result) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    if (result) {
+                        // Send JWT
+                        res.send({success: true, id:user[0]._id})
+                      } else {
+                        // response is OutgoingMessage object that server response http request
+                        res.status(401).json({success: false, message: 'passwords do not match'});
+                      }
+                })
+            }
+            else {
+                // No Content
+                res.status(400).json({success: false, message: "User not exist" })
+            }
         }
         )
         
     }
-    else{
-        res.send({ status: "invalid data"});
+    else {
+        // No Content
+        res.sendStatus(204)
+    }
+});
+
+app.post("/v3/register", (req, res) => {
+    console.log("register")
+    if (req.body.name && req.body.lastname && req.body.nickname && req.body.email && req.body.password) {
+        db.checkNicknameEMail(mongo_uri, req.body.nickname, req.body.email).then ((check) => {
+            console.log("check", check)
+            if (check.nickname || check.email) {
+                res.send(check)
+            }
+            else {
+                bcrypt.hash(req.body.password, 10).then(hash => {
+                    const timeElapsed = Date.now();
+                    const timeNow = new Date(timeElapsed);
+                    var user = {
+                        name: req.body.name,
+                        lastname: req.body.lastname,
+                        nickname: req.body.nickname,
+                        email: req.body.email,
+                        password: hash,
+                        registered: timeNow.toISOString(),
+                        role: ["member"]
+                    }
+                    db.registerUser(mongo_uri,user).then((ret) =>
+                        res.send({status: "registered"}))
+                    })
+                
+            }
+        })
+    }
+    else {
+        // No Content
+        res.sendStatus(204)
     }
 });
 

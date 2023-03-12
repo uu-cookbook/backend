@@ -6,6 +6,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
+EnvironmentFile=/root/uuCookBook/backend/.env
 ExecStart=/usr/bin/node /root/uuCookBook/backend/index.js
 Restart=on-failure
 
