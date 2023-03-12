@@ -44,10 +44,11 @@ app.post("/v3/login", (req, res) => {
                     }
                     if (result) {
                         // Send JWT
+                        console.log("login successful")
                         res.send({success: true, id:user[0]._id})
                       } else {
                         // response is OutgoingMessage object that server response http request
-                        res.status(401).json({success: false, message: 'passwords do not match'});
+                        res.status(401).json({success: false, message: 'Wrong password'});
                       }
                 })
             }
