@@ -34,7 +34,7 @@ app.get("/v3/users", (req, res) => {
 
 app.post("/v3/login", (req, res) => {
     console.log("login")
-    console.log("req.body", req.body);
+    //console.log("req.body", req.body);
     if (req.body.email && req.body.password) {
         db.getUser(mongo_uri,req.body.email).then((user) => {
             if (user.length > 0) {
