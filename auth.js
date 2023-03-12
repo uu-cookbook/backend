@@ -80,5 +80,26 @@ router.post("/v3/register", (req, res) => {
     }
 });
 
+// USER route (requires JWT token) returns user object
+
+router.get("/user", (req, res) => {
+    console.log("user")
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(' ')[1];
+        jwt.verify(token, jwtSecretKey, (err, decoded) => {
+            if (err) {
+                console.log("error 401")
+                res.status(401).json({success: false, message: 'Failed to authenticate token.'});
+            } else {
+                // if everything is good, save to request for use in other routes
+                res.send(decoded);
+            }
+        });
+    }
+    else {
+        res.status(401).json({success: false, message: 'No token provided.'});
+    }
+})
+
 
 module.exports = router;
