@@ -5,6 +5,7 @@ const router = express.Router();
 
 const db = require("./db");
 const mongo_uri = process.env.MONGO_URI
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 // LOGIN route
 
@@ -20,9 +21,9 @@ router.post("/login", (req, res) => {
                     }
                     if (result) {
                         // Send JWT
-                        // TODO
+                        const token = jwt.sign(user[0], jwtSecretKey);
                         console.log("login successful")
-                        res.send({success: true, id:user[0]._id})
+                        res.send({success: true, token:token})
                       } else {
                         // response is OutgoingMessage object that server response http request
                         res.status(401).json({success: false, message: 'Wrong password'});
