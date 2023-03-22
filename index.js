@@ -3,9 +3,15 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 var cors = require('cors')
+const multer = require('multer');
+const upload = multer();
+
 
 var app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
+
 app.use(cors())
 
 
@@ -13,8 +19,10 @@ dotenv.config();
 
 const db = require("./db");
 const auth = require("./auth.js");
+const cookbook = require("./cookbook.js");
 
 app.use("/v3/",auth)
+app.use("/v3/",cookbook)
 
 
 // Express setings
