@@ -57,7 +57,29 @@ async function registerUser(uri, user) {
 
 }
 
-module.exports = { getUsers, getUser, checkNicknameEMail, registerUser};
+async function addRecipe(uri, recipe) {
+    //recipe = {
+    //    name:String,
+    //    description:String,
+    //    ingredients:[String],
+    //    steps:[String],
+    //    image:String,
+    //    author:string,
+    //    date:Date
+    //}
+    const client = new MongoClient(uri);
+    const database = client.db("CookBook");
+    const collection = database.collection("Recipes");
+    var res = await collection.insertOne(recipe, (err, res) => {
+        if (err) {
+            return {status: "err"}
+        }
+    })
+    return ({status:"ok", id:res.insertedId})
+}
+
+
+module.exports = { getUsers, getUser, checkNicknameEMail, registerUser, addRecipe};
 
 //getUsers().then((value) => {
 //    console.log(value);
