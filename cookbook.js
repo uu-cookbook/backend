@@ -5,11 +5,32 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const upload = multer()
+const mw = require("./middlewares.js");
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 
 const db = require("./db");
 const mongo_uri = process.env.MONGO_URI
 const jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    if (token == null) return res.sendStatus(401)
+  
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+      console.log(err)
+  
+      if (err) return res.sendStatus(403)
+  
+      req.user = user
+  
+      next()
+    })
+  }
 
 router.get("/recipes", (req, res) => {
     console.log("get recipes")
@@ -23,23 +44,20 @@ router.post("/recipe", (req, res) => {
 });
 
 // router.post("/add_recipe", upload.single("image"), (req, res) => {
-router.post("/add_recipe", upload.single("image"), (req, res) => {
+router.post("/add_recipe", authenticateToken,upload.single("image"), (req, res) => {
 
     //console.log(req.body)
     console.log(req.file)
+    var recipe = req.body
+    recipe.author = {nickname: req.user.nickname, id: req.user._id}
 
-    db.addRecipe(mongo_uri,req.body).then((ret) => {
+    db.addRecipe(mongo_uri,recipe).then((ret) => {
         console.log("ret", ret)
         fs.writeFile("images/"+ret.id+".png", req.file.buffer, (err) => {
             console.error(err)
         })
         res.send({status: "registered", id: ret.id})
     })
-    
-
-
-    //console.log("add recipe")
-    //res.send({"status": "ok", "message": "add recipe", "data": req.body})
 });
 
 

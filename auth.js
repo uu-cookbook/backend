@@ -21,7 +21,7 @@ router.post("/login", (req, res) => {
                     }
                     if (result) {
                         // Send JWT
-                        const token = jwt.sign(user[0], jwtSecretKey, {expiresIn: '1m'});
+                        const token = jwt.sign(user[0], jwtSecretKey, {expiresIn: '1h'});
                         console.log("login successful")
                         res.send({success: true, token:token})
                       } else {
