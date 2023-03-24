@@ -11,7 +11,7 @@
     },
     "servers": [
       {
-        "url": "/v3"
+        "url": "https://api.uu.vojtechpetrasek.com/v3"
       }
     ],
     "tags": [
@@ -26,52 +26,167 @@
     ],
     "produces": ["application/json"],
     "paths": {
-      "/test": {
+      "/login": {
         "post": {
-          "x-swagger-router-controller": "home",
-          "operationId": "index",
           "tags": [
             "User Requests"
           ],
-          "description": "[Login 123](https://www.google.com)",
-          "parameters": [{
-            "name": "test",
-            "in": "formData",
-            "type": "array",
-            "collectionFormat": "multi",
-            "items": {
-              "type": "integer"
-             }
+          "description": "",
+          "summary": "Login user",
+          "produces": [
+            "application/json"],
+          "parameters": [
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": ""
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": ""
+                    }
+                  }
+                }
+              }
+            }
           },
-        { "name": "profileId", "in": "formData", "required": true, "type": "string" },
-        { "name": "file", "in": "formData", "type": "file", "required": "true" }],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string",
+                        "example": "Success"
+                      },
+                      "token": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "tags": [
+           "User Requests"
+         ],
+          "description": "",
+          "summary": "Create new user",
+          "parameters": [],
+          "responses": {}
+        }
+      },
+      "/user/{id}": {
+        "get": {
+          "tags": [
+           "User Requests"
+         ],
+          "description": "",
+          "summary": "Get user by id",
+          "parameters": [],
+          "responses": {}
+        },
+        "put": {
+          "tags": [
+           "User Requests"
+         ],
+          "description": "",
+          "summary": "Update user by id",
+          "parameters": [],
+          "responses": {}
+        },
+        "delete": {
+          "tags": [
+           "User Requests"
+         ],
+          "description": "",
+          "summary": "Delete user by id",
+          "parameters": [],
+          "responses": {}
+        }
+      },
+      "/users": {
+        "get": {
+          "tags": [
+           "User Requests"
+         ],
+          "description": "Get all users",
+          "summary": "Get all users",
+          "parameters": [],
           "responses": {}
         }
       },
       "/recipes": {
          "get": {
-           "x-swagger-router-controller": "bar",
-           "operationId": "impossible",
            "tags": [
             "Recipe Requests"
           ],
            "description": "",
+           "summary": "Get all recipes",
            "parameters": [],
            "responses": {}
          }
        },
        "/add_recipe": {
         "post": {
-          "x-swagger-router-controller": "bar",
-          "operationId": "impossible",
           "tags": [
            "Recipe Requests"
          ],
           "description": "",
+          "summary": "Create new recipe",
+          "parameters": [],
+          "responses": {}
+        }
+        
+      },
+      "/recipe/{id}": {
+        "get": {
+          "tags": [
+           "Recipe Requests"
+         ],
+          "description": "",
+          "summary": "Get recipe by id",
+          "parameters": [],
+          "responses": {}
+        },
+        "put": {
+          "tags": [
+           "Recipe Requests"
+         ],
+          "description": "",
+          "summary": "Update recipe by id",
+          "parameters": [],
+          "responses": {}
+        },
+        "delete": {
+          "tags": [
+           "Recipe Requests"
+         ],
+          "description": "",
+          "summary": "Delete recipe by id",
           "parameters": [],
           "responses": {}
         }
       }
+
    },
    "securityDefinitions": {
      "api_key": {
