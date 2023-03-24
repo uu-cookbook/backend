@@ -5,12 +5,15 @@ const bcrypt = require('bcrypt');
 var cors = require('cors')
 const multer = require('multer');
 const upload = multer();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/swagger.json');
 
 
 var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+app.use('/v3/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(cors())
 

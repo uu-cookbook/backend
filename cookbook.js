@@ -33,8 +33,9 @@ function authenticateToken(req, res, next) {
   }
 
 router.get("/recipes", (req, res) => {
-    console.log("get recipes")
-    res.send("get recipes")
+    db.getRecipes(mongo_uri).then((recipes) => {
+        res.send(recipes)
+    })
 });
 
 router.post("/recipe", (req, res) => {

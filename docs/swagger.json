@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.0",
+    "info": {
+      "title": "uuCookBook API",
+      "description": "",
+      "version": "1.0",
+      "license": {
+        "name": "GPL-3.0",
+        "url": "https://opensource.org/license/gpl-3-0/"
+      }
+    },
+    "servers": [
+      {
+        "url": "/v3"
+      }
+    ],
+    "tags": [
+      {
+        "name": "User Requests",
+        "description": "Example API for requesting and return User Requests"
+      },
+      {
+        "name": "Recipe Requests",
+        "description": "Example API for requesting and return Recipe Requests"
+      }
+    ],
+    "produces": ["application/json"],
+    "paths": {
+      "/test": {
+        "post": {
+          "x-swagger-router-controller": "home",
+          "operationId": "index",
+          "tags": [
+            "User Requests"
+          ],
+          "description": "[Login 123](https://www.google.com)",
+          "parameters": [{
+            "name": "test",
+            "in": "formData",
+            "type": "array",
+            "collectionFormat": "multi",
+            "items": {
+              "type": "integer"
+             }
+          },
+        { "name": "profileId", "in": "formData", "required": true, "type": "string" },
+        { "name": "file", "in": "formData", "type": "file", "required": "true" }],
+          "responses": {}
+        }
+      },
+      "/recipes": {
+         "get": {
+           "x-swagger-router-controller": "bar",
+           "operationId": "impossible",
+           "tags": [
+            "Recipe Requests"
+          ],
+           "description": "",
+           "parameters": [],
+           "responses": {}
+         }
+       },
+       "/add_recipe": {
+        "post": {
+          "x-swagger-router-controller": "bar",
+          "operationId": "impossible",
+          "tags": [
+           "Recipe Requests"
+         ],
+          "description": "",
+          "parameters": [],
+          "responses": {}
+        }
+      }
+   },
+   "securityDefinitions": {
+     "api_key": {
+       "type": "apiKey",
+       "name": "api_key",
+       "in":"header"
+     }
+   }
+ }

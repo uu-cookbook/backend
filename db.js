@@ -78,8 +78,17 @@ async function addRecipe(uri, recipe) {
     return ({status:"ok", id:res.insertedId})
 }
 
+async function getRecipes(uri) {
+    const client = new MongoClient(uri);
+    const database = client.db("CookBook");
+    const collection = database.collection("Recipes");
+    const query = {};
+    var recipes = await collection.find(query).toArray();
+    client.close();
+    return recipes;
+}
 
-module.exports = { getUsers, getUser, checkNicknameEMail, registerUser, addRecipe};
+module.exports = { getUsers, getUser, checkNicknameEMail, registerUser, addRecipe, getRecipes};
 
 //getUsers().then((value) => {
 //    console.log(value);
